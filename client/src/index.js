@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './assets/styles/generated-tailwind.css';
+import './assets/styles/space-grotesk.css';
+import App from './views/App';
 import * as serviceWorker from './serviceWorker';
+
+require('typeface-ibm-plex-sans');
 
 ReactDOM.render(
   <React.StrictMode>

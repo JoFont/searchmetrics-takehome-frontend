@@ -20,5 +20,26 @@
   "homepage": "https://github.com/JoFont/searchmetrics-takehome-frontend#readme",
   "devDependencies": {
     "concurrently": "^5.3.0"
+  },
+  "dependencies": {
+    "typeface-ibm-plex-sans": "0.0.75"
+  },
+  "prettier": {
+    "printWidth": 130,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "jsxSingleQuote": true,
+    "endOfLine": "auto",
+    "parser": "babel",
+    "semi": true,
+    "requirePragma": false,
+    "proseWrap": "preserve",
+    "arrowParens": "avoid",
+    "htmlWhitespaceSensitivity": "css",
+    "quoteProps": "as-needed",
+    "vueIndentScriptAndStyle": false
   }
 }
