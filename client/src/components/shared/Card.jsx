@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 const Card = props => {
-  return <div className={classNames('w-full shadow-xl rounded-lg p-8', props.className)}>{props.children}</div>;
+  return <div className={classNames('w-full shadow-xl rounded-lg bg-white p-8', props.className)}>{props.children}</div>;
 };
 
 Card.propTypes = {
