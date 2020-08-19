@@ -22,7 +22,10 @@ const TextInput = ({ type = 'text', value = '', placeholder = '', className, onC
       placeholder={placeholder}
       onChange={handleChange}
       value={localValue}
-      className={classNames('px-2 py-1 leading-none outline-none rounded border-transparent focus:border-smetrics', className)}
+      className={classNames(
+        'px-2 py-1 leading-none outline-none rounded border-solid border-2 border-transparent focus:border-smetrics',
+        className
+      )}
     />
   );
 };
