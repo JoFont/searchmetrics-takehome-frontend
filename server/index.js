@@ -10,7 +10,7 @@ const typeDefs = `
   type Category {
     id: ID!
     name: String!
-    keywords: String!
+    keywords: [String!]
   }
 
   type Query {
@@ -49,7 +49,6 @@ const resolvers = {
     categories: {
       subscribe: (_, __, { pubsub }) => {
         const channel = Math.random().toString(36).slice(2, 15);
-        console.log(categories);
         onCategoryUpdates(() => pubsub.publish(channel, { categories }));
         setTimeout(() => pubsub.publish(channel, { categories }), 0);
         return pubsub.asyncIterator(channel);
