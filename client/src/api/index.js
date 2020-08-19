@@ -1,8 +1,17 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { WebSocketLink } from '@apollo/client/link/ws';
+
+const link = new WebSocketLink({
+  uri: `ws://localhost:4000/pubsub`,
+  options: {
+    reconnect: true
+  }
+});
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql/",
-  cache: new InMemoryCache(),
+  link,
+  uri: 'http://localhost:4000/graphql',
+  cache: new InMemoryCache()
 });
 
 export default client;

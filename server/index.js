@@ -1,58 +1,71 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { graphqlExpress, graphiqlExpress } = require("apollo-server-express");
-const { makeExecutableSchema } = require("graphql-tools");
-const cors = require("cors");
+const { GraphQLServer, PubSub } = require('graphql-yoga');
+const { v4: uuidv4 } = require('uuid');
 
 const categories = [
-  { id: "1", keywords: ["cat", "dog", "cenas"] },
-  { id: "2", keywords: ["teste", "teste 2"] },
+  { id: '1', name: 'Category 1', keywords: ['cat', 'dog', 'cenas'] },
+  { id: '2', name: 'Category 1', keywords: ['teste', 'teste 2'] }
 ];
 
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
 const typeDefs = `
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-
-  # This "Book" type defines the queryable fields for every book in our data source.
   type Category {
-    id: String
-    keywords: [String]
+    id: ID!
+    name: String!
+    keywords: String!
   }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
-    categories: [Category]
+    categories: [Category!]
+  }
+
+  type Mutation {
+    addCategory(name: String!, keywords: [String!]): ID!
+  }
+
+  type Subscription {
+    categories: [Category!]
   }
 `;
 
+const subscribers = [];
+const onCategoryUpdates = fn => subscribers.push(fn);
+
 const resolvers = {
   Query: {
-    categories: () => categories,
+    categories: () => categories
   },
+  Mutation: {
+    addCategory: (_, { name, keywords }) => {
+      const id = uuidv4;
+      categories.push({
+        id,
+        name,
+        keywords
+      });
+      subscribers.forEach(fn => fn());
+      return id;
+    }
+  },
+  Subscription: {
+    categories: {
+      subscribe: (_, __, { pubsub }) => {
+        const channel = Math.random().toString(36).slice(2, 15);
+        console.log(categories);
+        onCategoryUpdates(() => pubsub.publish(channel, { categories }));
+        setTimeout(() => pubsub.publish(channel, { categories }), 0);
+        return pubsub.asyncIterator(channel);
+      }
+    }
+  }
 };
 
-// Put together a schema
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
-
-// Initialize the app
-const app = express();
-
-app.use(cors());
-
-// The GraphQL endpoint
-app.use("/graphql", bodyParser.json(), graphqlExpress({ schema }));
-
-// GraphiQL, a visual editor for queries
-app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
-
-// Start the server
-app.listen(4000, () => {
-  console.log("Go to http://localhost:4000/graphiql to run queries!");
+const pubsub = new PubSub();
+const options = {
+  port: 4000,
+  endpoint: '/graphql',
+  subscriptions: '/pubsub',
+  playground: '/playground'
+};
+const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub } });
+server.start(options, ({ port }) => {
+  console.log(`Server on http://localhost:${port}/`);
 });

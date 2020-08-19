@@ -3,7 +3,7 @@ import React from 'react';
 import FadeIn from 'react-fade-in';
 import client from '../api';
 import Header from '../components/Header';
-import KeywordManager from '../components/KeywordManager';
+import KeywordManager from '../components/KeywordManager/KeywordManager.jsx';
 import Card from '../components/shared/Card';
 import Hero from '../components/shared/Hero';
 
