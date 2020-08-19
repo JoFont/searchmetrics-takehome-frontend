@@ -17,7 +17,9 @@ module.exports = {
       }
     }
   },
-  variants: {},
+  variants: {
+    border: ['responsive', 'focus', 'hover', 'active']
+  },
   plugins: [],
   future: {
     removeDeprecatedGapUtilities: true

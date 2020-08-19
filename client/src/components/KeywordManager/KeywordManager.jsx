@@ -1,5 +1,6 @@
 import { useSubscription } from '@apollo/client';
 import React from 'react';
+import TextInput from '../shared/TextInput';
 import { GET_CATEGORIES } from './KeywordManager.graphql';
 
 const KeywordManager = () => {
@@ -7,10 +8,14 @@ const KeywordManager = () => {
 
   if (!data) return null;
 
+  const handleCategoryNameChange = (id, name) => {
+    console.log(id, name);
+  };
+
   return (
     <div>
       {data.categories.map(({ id, name, keywords }) => (
-        <p key={id}>{name}</p>
+        <TextInput key={id} value={name} onChange={newName => handleCategoryNameChange(id, newName)} />
       ))}
     </div>
   );

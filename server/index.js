@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const categories = [
   { id: '1', name: 'Category 1', keywords: ['cat', 'dog', 'cenas'] },
-  { id: '2', name: 'Category 1', keywords: ['teste', 'teste 2'] }
+  { id: '2', name: 'Category 2', keywords: ['teste', 'teste 2'] }
 ];
 
 const typeDefs = `
