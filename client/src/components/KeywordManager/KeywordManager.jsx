@@ -1,8 +1,8 @@
 import { useSubscription } from '@apollo/client';
 import React from 'react';
-import TextInput from '../shared/TextInput';
 import CategoryItem from './components/CategoryItem';
 import { GET_CATEGORIES } from './KeywordManager.graphql';
+import PropTypes from 'prop-types';
 
 const KeywordManager = () => {
   const { data } = useSubscription(GET_CATEGORIES);
@@ -16,10 +16,12 @@ const KeywordManager = () => {
   return (
     <div className='flex flex-col space-y-2'>
       {data.categories.map(({ id, name, keywords }) => (
-        <CategoryItem key={id} categoryName={name} />
+        <CategoryItem key={id} categoryName={name} keywords={keywords} />
       ))}
     </div>
   );
 };
+
+KeywordManager.propTypes = {};
 
 export default KeywordManager;
