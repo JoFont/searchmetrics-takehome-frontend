@@ -1,9 +1,10 @@
 const { GraphQLServer, PubSub } = require('graphql-yoga');
+const { findIndex, difference, isInteger } = require('lodash');
 const { v4: uuidv4 } = require('uuid');
 
 const categories = [
-  { id: '1', name: 'Category 1', keywords: ['cat', 'dog', 'cenas'] },
-  { id: '2', name: 'Category 2', keywords: ['teste', 'teste 2'] }
+  { id: 'swdfwdfsdf', name: 'Category 1', keywords: ['cat', 'dog', 'cenas'] },
+  { id: 'ohmfnmnfk', name: 'Category 2', keywords: ['teste', 'teste 2'] }
 ];
 
 const typeDefs = `
@@ -19,6 +20,8 @@ const typeDefs = `
 
   type Mutation {
     addCategory(name: String!, keywords: [String!]): ID!
+    addKeyword(id: ID!, keyword: String!): ID!
+    removeKeyword(id: ID!, keyword: String!): ID!
   }
 
   type Subscription {
@@ -41,6 +44,27 @@ const resolvers = {
         name,
         keywords
       });
+      subscribers.forEach(fn => fn());
+      return id;
+    },
+
+    addKeyword: (_, { id, keyword }) => {
+      const categoryIndex = findIndex(categories, { id });
+      if (isInteger(categoryIndex)) {
+        categories[categoryIndex].keywords.push(keyword);
+      }
+      subscribers.forEach(fn => fn());
+      return id;
+    },
+
+    removeKeyword: (_, { id, keyword }) => {
+      const categoryIndex = findIndex(categories, { id });
+      console.log('asefswef', categoryIndex, id, keyword);
+
+      if (isInteger(categoryIndex)) {
+        const newKeywords = difference([...categories[categoryIndex].keywords], [keyword]);
+        categories[categoryIndex].keywords = newKeywords;
+      }
       subscribers.forEach(fn => fn());
       return id;
     }

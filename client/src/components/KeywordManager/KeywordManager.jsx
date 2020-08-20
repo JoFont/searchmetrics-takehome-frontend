@@ -1,11 +1,13 @@
-import { useSubscription } from '@apollo/client';
+import { useSubscription, useMutation } from '@apollo/client';
 import React from 'react';
 import CategoryItem from './components/CategoryItem';
-import { GET_CATEGORIES } from './KeywordManager.graphql';
+import { GET_CATEGORIES, ADD_KEYWORD, REMOVE_KEYWORD } from './KeywordManager.graphql';
 import PropTypes from 'prop-types';
 
 const KeywordManager = () => {
   const { data } = useSubscription(GET_CATEGORIES);
+  const [addKeyword] = useMutation(ADD_KEYWORD);
+  const [removeKeyword] = useMutation(REMOVE_KEYWORD);
 
   if (!data) return null;
 
@@ -13,10 +15,37 @@ const KeywordManager = () => {
     console.log(id, name);
   };
 
+  const addNewKeyword = (id, value) => {
+    addKeyword({
+      variables: {
+        id,
+        keyword: value
+      }
+    });
+  };
+
+  const removeOldKeyword = (id, value) => {
+    removeKeyword({
+      variables: {
+        id,
+        keyword: value
+      }
+    });
+  };
+
+  console.log(data);
+
   return (
     <div className='flex flex-col space-y-2'>
       {data.categories.map(({ id, name, keywords }) => (
-        <CategoryItem key={id} categoryName={name} keywords={keywords} />
+        <CategoryItem
+          key={id}
+          id={id}
+          categoryName={name}
+          keywords={keywords}
+          onNewKeyword={addNewKeyword}
+          onKeywordRemove={removeOldKeyword}
+        />
       ))}
     </div>
   );

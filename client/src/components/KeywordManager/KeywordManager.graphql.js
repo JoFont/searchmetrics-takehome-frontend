@@ -15,3 +15,15 @@ export const ADD_CATEGORY = gql`
     addCategory(user: $user)
   }
 `;
+
+export const ADD_KEYWORD = gql`
+  mutation($id: ID!, $keyword: String!) {
+    addKeyword(id: $id, keyword: $keyword)
+  }
+`;
+
+export const REMOVE_KEYWORD = gql`
+  mutation($id: ID!, $keyword: String!) {
+    removeKeyword(id: $id, keyword: $keyword)
+  }
+`;
