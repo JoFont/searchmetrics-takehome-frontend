@@ -9,7 +9,7 @@ const Tag = ({ className, value }) => {
         className='text-white outline-none px-3 pt-1 pb-2 leading-none flex items-center justify-between'
         role='textbox'
         contenteditable='true'>
-        {value}
+        <p>{value}</p>
       </span>
     </div>
   );
