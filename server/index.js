@@ -21,7 +21,7 @@ const typeDefs = `
   type Mutation {
     addCategory(name: String!, keywords: [String!]): ID!
     addKeyword(id: ID!, keyword: String!): ID!
-    removeKeyword(id: ID!, keyword: String!): ID!
+    deleteKeyword(id: ID!, keyword: String!): ID!
   }
 
   type Subscription {
@@ -57,7 +57,7 @@ const resolvers = {
       return id;
     },
 
-    removeKeyword: (_, { id, keyword }) => {
+    deleteKeyword: (_, { id, keyword }) => {
       const categoryIndex = findIndex(categories, { id });
       console.log('asefswef', categoryIndex, id, keyword);
 

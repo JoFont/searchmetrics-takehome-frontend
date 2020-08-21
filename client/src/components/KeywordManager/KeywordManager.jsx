@@ -1,13 +1,13 @@
 import { useSubscription, useMutation } from '@apollo/client';
 import React from 'react';
 import CategoryItem from './components/CategoryItem';
-import { GET_CATEGORIES, ADD_KEYWORD, REMOVE_KEYWORD } from './KeywordManager.graphql';
+import { GET_CATEGORIES, ADD_KEYWORD, DELETE_KEYWORD } from './KeywordManager.graphql';
 import PropTypes from 'prop-types';
 
 const KeywordManager = () => {
   const { data } = useSubscription(GET_CATEGORIES);
   const [addKeyword] = useMutation(ADD_KEYWORD);
-  const [removeKeyword] = useMutation(REMOVE_KEYWORD);
+  const [deleteKeyword] = useMutation(DELETE_KEYWORD);
 
   if (!data) return null;
 
@@ -25,7 +25,7 @@ const KeywordManager = () => {
   };
 
   const removeOldKeyword = (id, value) => {
-    removeKeyword({
+    deleteKeyword({
       variables: {
         id,
         keyword: value

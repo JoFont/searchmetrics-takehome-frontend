@@ -1,23 +1,18 @@
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 import { isFunction } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiTrash } from 'react-icons/fi';
-import { motion } from 'framer-motion';
 import { useKey } from 'react-use';
 
 const Tag = ({ className, value, removable, onTagRemove }) => {
   const [hover, setHover] = useState(false);
-  const [trashHover, setTrashHover] = useState(false);
 
   const iconContainerAnimation = {
     open: { width: '1.5rem', opacity: 1 },
     closed: { width: '0rem', opacity: 0 }
   };
-
-  useEffect(() => {
-    console.log('HOVER');
-  }, [hover]);
 
   return (
     <div
@@ -27,19 +22,25 @@ const Tag = ({ className, value, removable, onTagRemove }) => {
       <p className='text-white outline-none px-3 pt-1 pb-2 leading-none flex items-center justify-between'>{value}</p>
       {removable && (
         <motion.div
-          animate={hover && removable ? 'open' : 'closed'}
+          animate={hover ? 'open' : 'closed'}
           variants={iconContainerAnimation}
           transition={{ duration: 0.15 }}
-          className='pr-2'
-          onMouseEnter={() => setTrashHover(true)}
-          onMouseLeave={() => setTrashHover(false)}
-          onClick={e => onTagRemove(value, e)}>
-          <FiTrash className={trashHover ? 'text-red-600' : 'text-white'} />
+          onClick={e => onTagRemove(value, e)}
+          whileHover={{ rotate: 15 }}
+          className={classNames('flex justify-center items-center mr-1 text-white')}>
+          <FiTrash />
         </motion.div>
       )}
     </div>
   );
 };
+
+Tag.propTypes = {
+  className: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+};
+
+export default Tag;
 
 const InputTag = ({
   type = 'text',
@@ -84,14 +85,9 @@ InputTag.prototypes = {
   type: PropTypes.string,
   value: PropTypes.value,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func
-};
-
-Tag.propTypes = {
-  className: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  onChange: PropTypes.func,
+  onFinishEditing: PropTypes.func,
+  error: PropTypes.bool
 };
 
 Tag.InputTag = InputTag;
-
-export default Tag;

@@ -12,7 +12,19 @@ export const GET_CATEGORIES = gql`
 
 export const ADD_CATEGORY = gql`
   mutation($name: String!) {
-    addCategory(user: $user)
+    addCategory(name: $name)
+  }
+`;
+
+export const RENAME_CATEGORY = gql`
+  mutation($id: ID!, $name: String!) {
+    renameCategory(id: $id, name: $name)
+  }
+`;
+
+export const DELETE_CATEGORY = gql`
+  mutation($id: ID!) {
+    deleteCategory(id: $id)
   }
 `;
 
@@ -22,8 +34,8 @@ export const ADD_KEYWORD = gql`
   }
 `;
 
-export const REMOVE_KEYWORD = gql`
+export const DELETE_KEYWORD = gql`
   mutation($id: ID!, $keyword: String!) {
-    removeKeyword(id: $id, keyword: $keyword)
+    deleteKeyword(id: $id, keyword: $keyword)
   }
 `;

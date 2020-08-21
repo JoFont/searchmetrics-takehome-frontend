@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import { find, toLower } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Tag from '../../shared/Tag';
 import TextInput from '../../shared/TextInput';
+import DeleteButton from '../../shared/DeleteButton';
 
 const { InputTag } = Tag;
 
@@ -12,6 +13,7 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
   const [newTag, setNewTag] = useState(false);
   const [newTagText, setNewTagText] = useState(null);
   const [newTagIsInvalid, setNewTagIsInvalid] = useState(false);
+  const [hover, setHover] = useState(false);
 
   const generateNewTag = e => {
     if (e.target === containerRef.current && !newTag && newTagText !== '') {
@@ -22,7 +24,12 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
     }
   };
 
+  useEffect(() => {
+    console.dir(containerRef.current);
+  }, [containerRef]);
+
   const handleNewTagComplete = value => {
+    console.log(value);
     if (!value?.length) return setNewTag(false);
     if (!newTagIsInvalid) {
       onNewKeyword(id, value);
@@ -46,9 +53,11 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
     <div
       ref={containerRef}
       className={classNames(
-        'w-full rounded-md flex flex-wrap items-center justify-start overflow-hidden p-1 border-2 border-red cursor-pointer'
+        'w-auto relative rounded-md flex flex-wrap items-center justify-start overflow-visible p-2 pb-1 border-2 border-transparent hover:border-gray-300 hover:border-opacity-75 cursor-pointer'
       )}
-      onClick={generateNewTag}>
+      onClick={generateNewTag}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}>
       <div className='px-3 pb-1 bg-smetrics rounded-md mr-2 mb-1'>
         <TextInput value={categoryName} className='bg-transparent text-white h-full' />
       </div>
@@ -71,6 +80,7 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
           onFinishEditing={handleNewTagComplete}
         />
       )}
+      <DeleteButton className='absolute' visible={hover} style={{ right: -16, top: -16 }} />
     </div>
   );
 };
