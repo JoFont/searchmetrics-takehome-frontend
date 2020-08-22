@@ -18,7 +18,8 @@ const CategoryItem = ({
   onNewKeyword,
   onKeywordRemove,
   focus,
-  onClickAway
+  onClickAway,
+  onCategoryDelete
 }) => {
   const containerRef = useRef();
   const [newTag, setNewTag] = useState(false);
@@ -36,11 +37,10 @@ const CategoryItem = ({
     }
   };
 
-  const handleNewTagComplete = value => {
-    console.log(value);
-    if (!value?.length) return setNewTag(false);
+  const handleNewTagComplete = type => {
+    if (!newTagText?.length) return setNewTag(false);
     if (!newTagIsInvalid) {
-      onNewKeyword(id, value);
+      onNewKeyword(id, newTagText);
       setNewTagText(null);
       setNewTag(false);
     }
@@ -66,14 +66,13 @@ const CategoryItem = ({
       onClick={generateNewTag}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
-      <div className='px-3 pb-1 bg-smetrics rounded-md mr-2 mb-1'>
-        <TextInput
-          focus={focus}
-          value={categoryName}
-          onChange={onCategoryNameChange}
-          className='bg-transparent text-white h-full'
-        />
-      </div>
+      <InputTag
+        focus={focus}
+        value={categoryName}
+        onChange={onCategoryNameChange}
+        className='bg-smetrics mr-2 mb-1'
+        onFinishEditing={handleNewTagComplete}
+      />
       {keywords?.length > 0 &&
         keywords.map((tag, i) => (
           <Tag
@@ -96,7 +95,7 @@ const CategoryItem = ({
         )}
       </AnimatePresence>
 
-      <DeleteButton className='absolute' visible={hover} style={{ right: -16, top: -16 }} />
+      <DeleteButton className='absolute' visible={hover} style={{ right: -16, top: -16 }} onClick={() => onCategoryDelete(id)} />
     </div>
   );
 };

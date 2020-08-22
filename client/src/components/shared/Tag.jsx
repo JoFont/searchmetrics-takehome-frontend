@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { FiTrash } from 'react-icons/fi';
-import { useKey } from 'react-use';
+import { useClickAway, useKey } from 'react-use';
 
 const Tag = ({ className, value, removable, onTagRemove }) => {
   const [hover, setHover] = useState(false);
@@ -51,15 +51,23 @@ const InputTag = ({
   onChange,
   onFinishEditing,
   error,
+  focus,
   ...props
 }) => {
   const inputRef = useRef();
 
-  const handleFinish = () => isFunction(onFinishEditing) && onFinishEditing(value);
-  useKey('Enter', handleFinish);
+  const handleFinish = type => isFunction(onFinishEditing) && onFinishEditing(type);
 
   useEffect(() => {
-    inputRef.current.focus();
+    console.log(value);
+  }, [value]);
+
+  useKey('Enter', () => handleFinish('Enter'));
+  useKey('Tab', () => handleFinish('Tab'));
+  useClickAway(inputRef, handleFinish);
+
+  useEffect(() => {
+    if (focus) inputRef.current.focus();
   }, []);
 
   return (
@@ -74,7 +82,6 @@ const InputTag = ({
         type={type}
         placeholder={placeholder}
         onChange={e => onChange(e.target.value, e)}
-        onBlur={handleFinish}
         value={value}
         className={classNames(
           'text-white bg-transparent outline-none px-3 pt-1 pb-1 leading-none flex items-center justify-between',

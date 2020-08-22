@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import React from 'react';
 import { FiTrash } from 'react-icons/fi';
 
-const DeleteButton = ({ visible = true, className, style }) => {
+const DeleteButton = ({ visible = true, className, style, onClick }) => {
   const buttonVariants = {
     visible: { scale: 1, opacity: 1 },
     hidden: { scale: 0, opacity: 0 }
@@ -20,7 +20,8 @@ const DeleteButton = ({ visible = true, className, style }) => {
       animate={visible ? 'visible' : 'hidden'}
       variants={buttonVariants}
       transition={{ duration: 0.1, type: 'spring', velocity: 10, mass: 0.4, stiffness: 240 }}
-      whileHover={{ rotate: 20 }}>
+      whileHover={{ rotate: 20 }}
+      onClick={onClick}>
       <motion.div>
         <FiTrash className='text-white' />
       </motion.div>
