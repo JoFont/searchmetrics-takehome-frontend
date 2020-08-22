@@ -5,12 +5,12 @@ import LoadingSnake from '../../shared/LoadingSnake';
 const Loading = () => {
   return (
     <motion.div
-      className='w-full flex justify-center items-center'
+      className='w-full flex justify-center items-center h-12'
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0, opacity: 0 }}
       transition={{ duration: 0.1 }}>
-      <LoadingSnake className='w-48' />
+      <LoadingSnake className='w-32' />
     </motion.div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import Lottie from 'react-lottie';
 import * as animationData from './snake.json';
+
 const LoadingSnake = ({ isPaused = false, isStopped = false, loop = true, className }) => {
   const defaultOptions = {
     loop: loop,

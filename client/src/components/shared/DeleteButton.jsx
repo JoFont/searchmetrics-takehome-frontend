@@ -6,7 +6,7 @@ import { FiTrash } from 'react-icons/fi';
 
 const DeleteButton = ({ visible = true, className, style, onClick }) => {
   const buttonVariants = {
-    visible: { scale: 1, opacity: 1 },
+    show: { scale: 1, opacity: 1 },
     hidden: { scale: 0, opacity: 0 }
   };
 
@@ -17,7 +17,8 @@ const DeleteButton = ({ visible = true, className, style, onClick }) => {
         className
       )}
       style={!isEmpty(style) && style}
-      animate={visible ? 'visible' : 'hidden'}
+      initial={buttonVariants.hidden}
+      animate={visible ? 'show' : 'hidden'}
       variants={buttonVariants}
       transition={{ duration: 0.1, type: 'spring', velocity: 10, mass: 0.4, stiffness: 240 }}
       whileHover={{ rotate: 20 }}

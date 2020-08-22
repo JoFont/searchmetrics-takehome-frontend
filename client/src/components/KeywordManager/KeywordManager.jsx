@@ -3,12 +3,13 @@ import { AnimatePresence } from 'framer-motion';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 import ActionButton from '../shared/ActionButton';
+import Empty from '../shared/Empty';
 import CategoryItem from './components/CategoryItem';
 import Loading from './components/Loading';
 import { ADD_CATEGORY, ADD_KEYWORD, DELETE_CATEGORY, DELETE_KEYWORD, GET_CATEGORIES } from './KeywordManager.graphql';
 
 const KeywordManager = () => {
-  const { data, loading } = useSubscription(GET_CATEGORIES);
+  const { data } = useSubscription(GET_CATEGORIES);
   const [addCategory, { loading: addCategoryLoading }] = useMutation(ADD_CATEGORY);
   const [deleteCategory] = useMutation(DELETE_CATEGORY);
   const [addKeyword] = useMutation(ADD_KEYWORD);
@@ -21,8 +22,6 @@ const KeywordManager = () => {
   const handleCategoryNameChange = (id, name) => {
     console.log(id, name);
   };
-
-  console.log('LOADING', loading);
 
   const addNewCategory = async name => {
     if (!!name) {
@@ -69,6 +68,7 @@ const KeywordManager = () => {
       {newCategory && (
         <CategoryItem
           focus
+          newCategory
           key={'new_keyword'}
           id={'new_keyword'}
           categoryName={newCategoryName}
@@ -76,6 +76,7 @@ const KeywordManager = () => {
           onNewKeyword={noop}
           onKeywordRemove={noop}
           onClickAway={addNewCategory}
+          onCategoryDelete={() => addNewCategory('')}
           onCategoryNameChange={val => setNewCategoryName(val)}
         />
       )}
@@ -90,6 +91,11 @@ const KeywordManager = () => {
           onCategoryDelete={deleteExistingCategory}
         />
       ))}
+      {!data?.categories?.length && !newCategory && !addCategoryLoading && (
+        <div className='w-full flex justify-center items-center mt-0'>
+          <Empty title='No categories yet!' subTitle='Click above to add one.' />
+        </div>
+      )}
     </div>
   );
 };

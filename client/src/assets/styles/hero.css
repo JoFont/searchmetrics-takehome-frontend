@@ -8,5 +8,17 @@
   height: 100%;
   z-index: 1;
   background-size: 0.8rem 0.8rem;
-  top: 35%;
+  top: calc(50% - 18rem);
 }
+
+/* @media only screen and (max-width: 1500px) {
+  .hero::before {
+    top: 20%;
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .hero::before {
+    top: 30%;
+  }
+} */

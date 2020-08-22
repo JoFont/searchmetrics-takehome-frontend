@@ -18,6 +18,7 @@ const CategoryItem = ({
   onNewKeyword,
   onKeywordRemove,
   focus,
+  newCategory,
   onClickAway,
   onCategoryDelete
 }) => {
@@ -61,13 +62,19 @@ const CategoryItem = ({
     <div
       ref={containerRef}
       className={classNames(
-        'w-auto relative rounded-md flex flex-wrap items-center justify-start overflow-visible p-2 pb-1 border-2 border-transparent hover:border-gray-300 hover:border-opacity-75 cursor-pointer'
+        'w-auto relative rounded-md flex flex-wrap items-center justify-start overflow-visible p-2 pb-1 border-2 border-transparent hover:border-gray-300 hover:border-opacity-75 cursor-pointer',
+        newCategory ? 'border-gray-300 border-opacity-75' : ''
       )}
       onClick={generateNewTag}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
+      {newCategory && (
+        <div style={{ top: -26 }} className='absolute tetx-lg font-extrabold border-b-2 border-smetrics'>
+          NEW CATEGORY
+        </div>
+      )}
       <InputTag
-        focus={focus}
+        focus={focus || newCategory}
         value={categoryName}
         onChange={onCategoryNameChange}
         className='bg-smetrics mr-2 mb-1'
@@ -86,6 +93,7 @@ const CategoryItem = ({
       <AnimatePresence>
         {newTag && (
           <InputTag
+            focus
             value={newTagText}
             error={newTagIsInvalid}
             onChange={handleNewTagChange}
