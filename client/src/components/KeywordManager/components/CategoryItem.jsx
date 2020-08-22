@@ -1,19 +1,31 @@
 import classNames from 'classnames';
-import { find, toLower } from 'lodash';
+import { AnimatePresence } from 'framer-motion';
+import { find, isFunction, toLower } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
+import { useClickAway } from 'react-use';
+import DeleteButton from '../../shared/DeleteButton';
 import Tag from '../../shared/Tag';
 import TextInput from '../../shared/TextInput';
-import DeleteButton from '../../shared/DeleteButton';
 
 const { InputTag } = Tag;
 
-const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemove }) => {
+const CategoryItem = ({
+  id,
+  categoryName,
+  onCategoryNameChange,
+  keywords,
+  onNewKeyword,
+  onKeywordRemove,
+  focus,
+  onClickAway
+}) => {
   const containerRef = useRef();
   const [newTag, setNewTag] = useState(false);
   const [newTagText, setNewTagText] = useState(null);
   const [newTagIsInvalid, setNewTagIsInvalid] = useState(false);
   const [hover, setHover] = useState(false);
+  useClickAway(containerRef, () => isFunction(onClickAway) && onClickAway(categoryName));
 
   const generateNewTag = e => {
     if (e.target === containerRef.current && !newTag && newTagText !== '') {
@@ -23,10 +35,6 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
       setNewTagText(null);
     }
   };
-
-  useEffect(() => {
-    console.dir(containerRef.current);
-  }, [containerRef]);
 
   const handleNewTagComplete = value => {
     console.log(value);
@@ -59,7 +67,12 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
       <div className='px-3 pb-1 bg-smetrics rounded-md mr-2 mb-1'>
-        <TextInput value={categoryName} className='bg-transparent text-white h-full' />
+        <TextInput
+          focus={focus}
+          value={categoryName}
+          onChange={onCategoryNameChange}
+          className='bg-transparent text-white h-full'
+        />
       </div>
       {keywords?.length > 0 &&
         keywords.map((tag, i) => (
@@ -71,15 +84,18 @@ const CategoryItem = ({ id, categoryName, keywords, onNewKeyword, onKeywordRemov
             onTagRemove={value => onKeywordRemove(id, value)}
           />
         ))}
-      {newTag && (
-        <InputTag
-          value={newTagText}
-          error={newTagIsInvalid}
-          onChange={handleNewTagChange}
-          className='bg-black mr-2 mb-1'
-          onFinishEditing={handleNewTagComplete}
-        />
-      )}
+      <AnimatePresence>
+        {newTag && (
+          <InputTag
+            value={newTagText}
+            error={newTagIsInvalid}
+            onChange={handleNewTagChange}
+            className='bg-black mr-2 mb-1'
+            onFinishEditing={handleNewTagComplete}
+          />
+        )}
+      </AnimatePresence>
+
       <DeleteButton className='absolute' visible={hover} style={{ right: -16, top: -16 }} />
     </div>
   );

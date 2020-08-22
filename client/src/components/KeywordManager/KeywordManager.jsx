@@ -1,18 +1,34 @@
-import { useSubscription, useMutation } from '@apollo/client';
-import React from 'react';
+import { useMutation, useSubscription } from '@apollo/client';
+import { noop } from 'lodash';
+import React, { useState } from 'react';
+import ActionButton from '../shared/ActionButton';
 import CategoryItem from './components/CategoryItem';
-import { GET_CATEGORIES, ADD_KEYWORD, DELETE_KEYWORD } from './KeywordManager.graphql';
-import PropTypes from 'prop-types';
+import { ADD_CATEGORY, ADD_KEYWORD, DELETE_KEYWORD, GET_CATEGORIES } from './KeywordManager.graphql';
 
 const KeywordManager = () => {
   const { data } = useSubscription(GET_CATEGORIES);
+  const [addCategory] = useMutation(ADD_CATEGORY);
   const [addKeyword] = useMutation(ADD_KEYWORD);
   const [deleteKeyword] = useMutation(DELETE_KEYWORD);
+  const [newCategory, setNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
 
   if (!data) return null;
 
   const handleCategoryNameChange = (id, name) => {
     console.log(id, name);
+  };
+
+  const addNewCategory = name => {
+    if (!!name) {
+      addCategory({
+        variables: {
+          name
+        }
+      });
+      setNewCategory(false);
+      setNewCategoryName('');
+    }
   };
 
   const addNewKeyword = (id, value) => {
@@ -33,10 +49,24 @@ const KeywordManager = () => {
     });
   };
 
-  console.log(data);
-
   return (
     <div className='flex flex-col space-y-2'>
+      <div className='flex justify-end items-center pb-2'>
+        <ActionButton onClick={() => setNewCategory(true)}>ADD CATEGORY</ActionButton>
+      </div>
+      {newCategory && (
+        <CategoryItem
+          focus
+          key={'new_keyword'}
+          id={'new_keyword'}
+          categoryName={newCategoryName}
+          keywords={[]}
+          onNewKeyword={noop}
+          onKeywordRemove={noop}
+          onClickAway={addNewCategory}
+          onCategoryNameChange={val => setNewCategoryName(val)}
+        />
+      )}
       {data.categories.map(({ id, name, keywords }) => (
         <CategoryItem
           key={id}

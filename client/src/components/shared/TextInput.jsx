@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const TextInput = ({ type = 'text', value = '', placeholder = '', className, onChange, ...props }) => {
+const TextInput = ({ type = 'text', value = '', placeholder = '', className, onChange, focus, ...props }) => {
   const [localValue, setLocalValue] = useState(value);
+  const inputRef = useRef();
 
   const handleChange = e => {
     setLocalValue(e.target.value);
@@ -14,8 +15,13 @@ const TextInput = ({ type = 'text', value = '', placeholder = '', className, onC
     setLocalValue(value);
   }, [value]);
 
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [focus]);
+
   return (
     <input
+      ref={inputRef}
       type={type}
       placeholder={placeholder}
       onChange={handleChange}
