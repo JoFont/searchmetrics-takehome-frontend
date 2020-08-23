@@ -20,27 +20,27 @@ const CategoryItem = ({
 }) => {
   const containerRef = useRef();
   const [newTag, setNewTag] = useState(false);
-  const [newTagText, setNewTagText] = useState(null);
+
+  const [newTagText, setNewTagText] = useState('');
   const [newTagIsInvalid, setNewTagIsInvalid] = useState(false);
   const [hover, setHover] = useState(false);
   const [localCategoryName, setLocalCategoryName] = useState(categoryName);
   const newCategoryFinishEditing = () => isFunction(onComplete) && onComplete(localCategoryName);
 
+  const resetNewTag = () => setNewTag(false);
+
   const generateNewTag = e => {
-    if (e.target === containerRef.current && !newTag && newTagText !== '') {
+    if (e.target === containerRef.current && !newTag && !newTag) {
       setNewTag(true);
-      setNewTagText('');
-    } else {
-      setNewTagText(null);
     }
   };
 
   const handleNewTagComplete = type => {
-    if (!newTagText?.length) return setNewTag(false);
+    if (!newTagText?.length) return resetNewTag();
     if (!newTagIsInvalid) {
       onNewKeyword(id, newTagText);
-      setNewTagText(null);
-      setNewTag(false);
+      setNewTagText('');
+      resetNewTag();
     }
   };
 

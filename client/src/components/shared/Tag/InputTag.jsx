@@ -23,7 +23,7 @@ const InputTag = ({
 
   useKeyPressEvent('Enter', () => handleFinish('Enter'));
   useKeyPressEvent('Tab', () => handleFinish('Tab'));
-  useClickAway(inputRef, handleFinish);
+  useClickAway(inputRef, handleFinish, ['click']);
 
   useEffect(() => {
     if (focus) inputRef.current.focus();
