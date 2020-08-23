@@ -1,5 +1,4 @@
 import { useMutation, useSubscription } from '@apollo/client';
-import { AnimatePresence } from 'framer-motion';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
 import ActionButton from '../shared/ActionButton';

@@ -21,17 +21,13 @@ const InputTag = ({
 
   const handleFinish = type => isFunction(onFinishEditing) && onFinishEditing(type);
 
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
-
   useKey('Enter', () => handleFinish('Enter'));
   useKey('Tab', () => handleFinish('Tab'));
   useClickAway(inputRef, handleFinish);
 
   useEffect(() => {
     if (focus) inputRef.current.focus();
-  }, []);
+  }, [focus]);
 
   return (
     <motion.div
