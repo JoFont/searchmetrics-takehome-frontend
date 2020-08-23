@@ -8,11 +8,13 @@ import Tag from '../../shared/Tag';
 import InputTag from '../../shared/Tag/InputTag';
 
 /************************************************************
- *   There is a bug if the size of the category item is
- *   not big enough to house the Tag when hovering it, making
- *   the UI bounce, I have a couple of ideas on how to solve this
- *   but didn't implement any solution. Looking forward to
- *   discussing my approach in the next call ;)
+ *    There is a bug if the size of the category item is
+ *    not big enough to house the Tag when hovering it, making
+ *    the UI bounce, I have a couple of ideas on how to solve this
+ *    but didn't implement any solution. Looking forward to
+ *    discussing my approach in the next call ;)
+ *    I also think this component is too big and in my opinion
+ *    it should be refactored for better maintainability
  ************************************************************/
 
 const CategoryItem = ({

@@ -7,7 +7,7 @@ const Header = () => {
       <Logo />
       <div>
         <p>
-          Frontend Challenge by{' '}
+          Frontend Challenge by
           <a className='border-b-2 border-smetrics' href='https://github.com/JoFont' rel='noopener noreferrer' target='_blank'>
             Diogo Marques
           </a>

@@ -2,10 +2,17 @@ const { findIndex, difference, isInteger, slice, map, sortBy } = require('lodash
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 
-let categories = [
-  { id: 'swdfwdfsdf', name: 'Category 1', keywords: ['cat', 'dog', 'cenas'] },
-  { id: 'ohmfnmnfk', name: 'Category 2', keywords: ['teste', 'teste 2'] }
-];
+/************************************************************
+ *    I think this file should be split in different modules
+ *    for better maintainability but for this case I think it
+ *    would create unnecessary complexity.
+ *    Also the logic on some of this resolvers could have been 
+ *    written more verbosely for better readability  at the 
+ *    expense of slightly higher space complexity.
+ ************************************************************/
+
+
+let categories = [];
 
 const subscribers = [];
 const onCategoryUpdates = fn => subscribers.push(fn);
