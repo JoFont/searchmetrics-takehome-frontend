@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import Lottie from 'react-lottie';
 import * as animationData from './empty-box.json';
+import PropTypes from 'prop-types';
 
 const Empty = ({ isPaused = false, isStopped = false, loop = true, className, title, subTitle }) => {
   const defaultOptions = {
@@ -60,6 +61,15 @@ const Empty = ({ isPaused = false, isStopped = false, loop = true, className, ti
       </motion.div>
     </div>
   );
+};
+
+Empty.propTypes = {
+  isPaused: PropTypes.bool,
+  isStopped: PropTypes.bool,
+  loop: PropTypes.bool,
+  className: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
 };
 
 export default Empty;

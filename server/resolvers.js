@@ -43,6 +43,14 @@ module.exports = {
       subscribers.forEach(fn => fn());
       return id;
     },
+    renameCategory: (_, { id, name }) => {
+      const categoryIndex = findIndex(categories, { id });
+      if (isInteger(categoryIndex) && name.length) {
+        categories[categoryIndex].name = name;
+      }
+      subscribers.forEach(fn => fn());
+      return id;
+    },
     deleteCategory: (_, { id }) => {
       const categoryIndex = findIndex(categories, { id });
       if (isInteger(categoryIndex)) {

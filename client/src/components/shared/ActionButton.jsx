@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ActionButton = ({ children, onClick }) => {
   return (
@@ -9,5 +10,10 @@ const ActionButton = ({ children, onClick }) => {
     </button>
   );
 };
+
+ActionButton.propTypes = {
+  children: PropTypes.node,
+  onClick: PropTypes.func
+}
 
 export default ActionButton;

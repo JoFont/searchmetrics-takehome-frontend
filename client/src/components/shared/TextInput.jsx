@@ -36,7 +36,8 @@ TextInput.prototypes = {
   type: PropTypes.string,
   value: PropTypes.value,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  focus: PropTypes.bool
 };
 
 export default TextInput;

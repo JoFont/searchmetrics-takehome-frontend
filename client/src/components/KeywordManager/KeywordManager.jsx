@@ -6,11 +6,19 @@ import ActionButton from '../shared/ActionButton';
 import Empty from '../shared/Empty';
 import CategoryItem from './components/CategoryItem';
 import Loading from './components/Loading';
-import { ADD_CATEGORY, ADD_KEYWORD, DELETE_CATEGORY, DELETE_KEYWORD, GET_CATEGORIES } from './KeywordManager.graphql';
+import {
+  ADD_CATEGORY,
+  ADD_KEYWORD,
+  DELETE_CATEGORY,
+  DELETE_KEYWORD,
+  GET_CATEGORIES,
+  RENAME_CATEGORY
+} from './KeywordManager.graphql';
 
 const KeywordManager = () => {
   const { data } = useSubscription(GET_CATEGORIES);
   const [addCategory, { loading: addCategoryLoading }] = useMutation(ADD_CATEGORY);
+  const [renameCategory] = useMutation(RENAME_CATEGORY);
   const [deleteCategory] = useMutation(DELETE_CATEGORY);
   const [addKeyword] = useMutation(ADD_KEYWORD);
   const [deleteKeyword] = useMutation(DELETE_KEYWORD);
@@ -19,44 +27,30 @@ const KeywordManager = () => {
 
   if (!data) return null;
 
-  const handleCategoryNameChange = (id, name) => {
-    console.log(id, name);
-  };
-
   const addNewCategory = async name => {
     if (!!name) {
-      addCategory({
-        variables: {
-          name
-        }
-      });
+      addCategory({ variables: { name } });
     }
     setNewCategory(false);
     setNewCategoryName('');
   };
 
+  const renameExistingCategory = (id, name) => {
+    if (!!name) {
+      renameCategory({ variables: { id, name } });
+    }
+  };
+
   const deleteExistingCategory = id => {
-    deleteCategory({
-      variables: { id }
-    });
+    deleteCategory({ variables: { id } });
   };
 
   const addNewKeyword = (id, value) => {
-    addKeyword({
-      variables: {
-        id,
-        keyword: value
-      }
-    });
+    addKeyword({ variables: { id, keyword: value } });
   };
 
   const removeOldKeyword = (id, value) => {
-    deleteKeyword({
-      variables: {
-        id,
-        keyword: value
-      }
-    });
+    deleteKeyword({ variables: { id, keyword: value } });
   };
 
   return (
@@ -75,9 +69,8 @@ const KeywordManager = () => {
           keywords={[]}
           onNewKeyword={noop}
           onKeywordRemove={noop}
-          onClickAway={addNewCategory}
+          onComplete={addNewCategory}
           onCategoryDelete={() => addNewCategory('')}
-          onCategoryNameChange={val => setNewCategoryName(val)}
         />
       )}
       {data.categories.map(({ id, name, keywords }) => (
@@ -89,6 +82,7 @@ const KeywordManager = () => {
           onNewKeyword={addNewKeyword}
           onKeywordRemove={removeOldKeyword}
           onCategoryDelete={deleteExistingCategory}
+          onComplete={newName => renameExistingCategory(id, newName)}
         />
       ))}
       {!data?.categories?.length && !newCategory && !addCategoryLoading && (

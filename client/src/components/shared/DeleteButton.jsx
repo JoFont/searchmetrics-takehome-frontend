@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { FiTrash } from 'react-icons/fi';
+import PropTypes from 'prop-types';
 
 const DeleteButton = ({ visible = true, className, style, onClick }) => {
   const buttonVariants = {
@@ -29,5 +30,12 @@ const DeleteButton = ({ visible = true, className, style, onClick }) => {
     </motion.div>
   );
 };
+
+DeleteButton.propTypes = {
+  visible: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  onClick: PropTypes.func
+}
 
 export default DeleteButton;

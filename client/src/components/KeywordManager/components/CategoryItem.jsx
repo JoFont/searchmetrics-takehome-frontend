@@ -6,20 +6,17 @@ import React, { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import DeleteButton from '../../shared/DeleteButton';
 import Tag from '../../shared/Tag';
-import TextInput from '../../shared/TextInput';
-
-const { InputTag } = Tag;
+import InputTag from '../../shared/Tag/InputTag';
 
 const CategoryItem = ({
   id,
   categoryName,
-  onCategoryNameChange,
   keywords,
   onNewKeyword,
   onKeywordRemove,
   focus,
   newCategory,
-  onClickAway,
+  onComplete,
   onCategoryDelete
 }) => {
   const containerRef = useRef();
@@ -27,7 +24,8 @@ const CategoryItem = ({
   const [newTagText, setNewTagText] = useState(null);
   const [newTagIsInvalid, setNewTagIsInvalid] = useState(false);
   const [hover, setHover] = useState(false);
-  useClickAway(containerRef, () => isFunction(onClickAway) && onClickAway(categoryName));
+  const [localCategoryName, setLocalCategoryName] = useState(categoryName);
+  useClickAway(containerRef, () => isFunction(onComplete) && onComplete(localCategoryName));
 
   const generateNewTag = e => {
     if (e.target === containerRef.current && !newTag && newTagText !== '') {
@@ -75,8 +73,8 @@ const CategoryItem = ({
       )}
       <InputTag
         focus={focus || newCategory}
-        value={categoryName}
-        onChange={onCategoryNameChange}
+        value={localCategoryName}
+        onChange={setLocalCategoryName}
         className='bg-smetrics mr-2 mb-1'
         onFinishEditing={handleNewTagComplete}
       />
@@ -112,7 +110,12 @@ CategoryItem.propTypes = {
   id: PropTypes.string.isRequired,
   categoryName: PropTypes.string.isRequired,
   keywords: PropTypes.array,
-  onNewKeyword: PropTypes.func
+  onNewKeyword: PropTypes.func,
+  onKeywordRemove: PropTypes.func,
+  focus: PropTypes.bool,
+  newCategory: PropTypes.bool,
+  onComplete: PropTypes.func,
+  onCategoryDelete: PropTypes.func
 };
 
 export default CategoryItem;
