@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import { isFunction } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useClickAway, useKeyPressEvent } from 'react-use';
 
 const InputTag = ({
@@ -18,12 +18,18 @@ const InputTag = ({
   ...props
 }) => {
   const inputRef = useRef();
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleFinish = type => isFunction(onFinishEditing) && onFinishEditing(type);
 
-  useKeyPressEvent('Enter', () => handleFinish('Enter'));
-  useKeyPressEvent('Tab', () => handleFinish('Tab'));
-  useClickAway(inputRef, handleFinish, ['click']);
+  useKeyPressEvent('Enter', handleFinish);
+  useKeyPressEvent('Tab', handleFinish);
+  useClickAway(inputRef, () => isEditing && handleFinish(), ['click']);
+
+  const handleChange = e => {
+    onChange(e.target.value, e);
+    setIsEditing(true);
+  };
 
   useEffect(() => {
     if (focus) inputRef.current.focus();
@@ -40,7 +46,7 @@ const InputTag = ({
         ref={inputRef}
         type={type}
         placeholder={placeholder}
-        onChange={e => onChange(e.target.value, e)}
+        onChange={handleChange}
         value={value}
         className={classNames(
           'text-white bg-transparent outline-none px-3 pt-1 pb-1 leading-none flex items-center justify-between',

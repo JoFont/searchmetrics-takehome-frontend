@@ -27,17 +27,14 @@ const KeywordManager = () => {
   if (!data) return null;
 
   const addNewCategory = name => {
-    if (!!name) {
-      addCategory({ variables: { name } });
-    }
+    if (!!name) addCategory({ variables: { name } });
     setNewCategory(false);
     setNewCategoryName('');
   };
 
   const renameExistingCategory = (id, name) => {
-    if (!!name) {
-      renameCategory({ variables: { id, name } });
-    }
+    console.log('NAMEEEE', name);
+    if (name?.length && id) renameCategory({ variables: { id, name } });
   };
 
   const deleteExistingCategory = id => {
@@ -68,7 +65,7 @@ const KeywordManager = () => {
           keywords={[]}
           onNewKeyword={noop}
           onKeywordRemove={noop}
-          onComplete={addNewCategory}
+          onFinishEditing={addNewCategory}
           onCategoryDelete={() => addNewCategory('')}
         />
       )}
@@ -81,7 +78,7 @@ const KeywordManager = () => {
           onNewKeyword={addNewKeyword}
           onKeywordRemove={removeOldKeyword}
           onCategoryDelete={deleteExistingCategory}
-          onComplete={newName => renameExistingCategory(id, newName)}
+          onFinishEditing={newName => renameExistingCategory(id, newName)}
         />
       ))}
       {!data?.categories?.length && !newCategory && !addCategoryLoading && (
@@ -92,7 +89,5 @@ const KeywordManager = () => {
     </div>
   );
 };
-
-KeywordManager.propTypes = {};
 
 export default KeywordManager;

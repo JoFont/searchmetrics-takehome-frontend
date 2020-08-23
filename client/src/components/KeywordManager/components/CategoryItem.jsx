@@ -7,6 +7,14 @@ import DeleteButton from '../../shared/DeleteButton';
 import Tag from '../../shared/Tag';
 import InputTag from '../../shared/Tag/InputTag';
 
+/************************************************************
+ *   There is a bug if the size of the category item is
+ *   not big enough to house the Tag when hovering it, making
+ *   the UI bounce, I have a couple of ideas on how to solve this
+ *   but didn't implement any solution. Looking forward to
+ *   discussing my approach in the next call ;)
+ ************************************************************/
+
 const CategoryItem = ({
   id,
   categoryName,
@@ -15,27 +23,24 @@ const CategoryItem = ({
   onKeywordRemove,
   focus,
   newCategory,
-  onComplete,
+  onFinishEditing,
   onCategoryDelete
 }) => {
   const containerRef = useRef();
   const [newTag, setNewTag] = useState(false);
-
   const [newTagText, setNewTagText] = useState('');
   const [newTagIsInvalid, setNewTagIsInvalid] = useState(false);
   const [hover, setHover] = useState(false);
   const [localCategoryName, setLocalCategoryName] = useState(categoryName);
-  const newCategoryFinishEditing = () => isFunction(onComplete) && onComplete(localCategoryName);
+  const categoryFinishEditing = () => isFunction(onFinishEditing) && onFinishEditing(localCategoryName);
 
   const resetNewTag = () => setNewTag(false);
 
   const generateNewTag = e => {
-    if (e.target === containerRef.current && !newTag && !newTag) {
-      setNewTag(true);
-    }
+    if (e.target === containerRef.current && !newTag && !newTag) setNewTag(true);
   };
 
-  const handleNewTagComplete = type => {
+  const handleNewTagComplete = () => {
     if (!newTagText?.length) return resetNewTag();
     if (!newTagIsInvalid) {
       onNewKeyword(id, newTagText);
@@ -75,7 +80,7 @@ const CategoryItem = ({
         value={localCategoryName}
         onChange={setLocalCategoryName}
         className='bg-smetrics mr-2 mb-1'
-        onFinishEditing={newCategoryFinishEditing}
+        onFinishEditing={categoryFinishEditing}
       />
       {keywords?.length > 0 &&
         keywords.map((tag, i) => (
@@ -113,7 +118,7 @@ CategoryItem.propTypes = {
   onKeywordRemove: PropTypes.func,
   focus: PropTypes.bool,
   newCategory: PropTypes.bool,
-  onComplete: PropTypes.func,
+  onFinishEditing: PropTypes.func,
   onCategoryDelete: PropTypes.func
 };
 
