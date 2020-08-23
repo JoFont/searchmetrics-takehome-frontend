@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { find, isFunction, toLower } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
@@ -61,8 +61,12 @@ const CategoryItem = ({
   };
 
   return (
-    <div
+    <motion.div
       ref={containerRef}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.1 }}
       className={classNames(
         'w-auto relative rounded-md flex flex-wrap items-center justify-start overflow-visible p-2 pb-1 border-2 border-transparent hover:border-gray-300 hover:border-opacity-75 cursor-pointer',
         newCategory ? 'border-gray-300 border-opacity-75' : ''
@@ -106,7 +110,7 @@ const CategoryItem = ({
       </AnimatePresence>
 
       <DeleteButton className='absolute' visible={hover} style={{ right: -16, top: -16 }} onClick={() => onCategoryDelete(id)} />
-    </div>
+    </motion.div>
   );
 };
 
