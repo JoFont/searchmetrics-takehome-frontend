@@ -26,13 +26,11 @@ const InputTag = ({
   useKeyPressEvent('Tab', handleFinish);
   useClickAway(inputRef, () => isEditing && handleFinish(), ['click']);
 
-  const handleChange = e => {
-    onChange(e.target.value, e);
-    setIsEditing(true);
-  };
-
   useEffect(() => {
-    if (focus) inputRef.current.focus();
+    if (focus) {
+      inputRef.current.focus();
+      setIsEditing(true);
+    }
   }, [focus]);
 
   return (
@@ -46,7 +44,7 @@ const InputTag = ({
         ref={inputRef}
         type={type}
         placeholder={placeholder}
-        onChange={handleChange}
+        onChange={e => onChange(e.target.value, e)}
         value={value}
         className={classNames(
           'text-white bg-transparent outline-none px-3 pt-1 pb-1 leading-none flex items-center justify-between',

@@ -33,7 +33,6 @@ const KeywordManager = () => {
   };
 
   const renameExistingCategory = (id, name) => {
-    console.log('NAMEEEE', name);
     if (name?.length && id) renameCategory({ variables: { id, name } });
   };
 
