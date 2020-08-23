@@ -7,6 +7,14 @@ import KeywordManager from '../components/KeywordManager/KeywordManager.jsx';
 import Card from '../components/shared/Card';
 import Hero from '../components/shared/Hero';
 
+/************************************************************
+ *    The component is placed in then middle of the page
+ *    and will overflow vertically if enough components
+ *    are added, I decided to still keep it this way for 
+ *    presentation purposes.
+ ************************************************************/
+
+
 const App = () => {
   return (
     <ApolloProvider client={client}>
