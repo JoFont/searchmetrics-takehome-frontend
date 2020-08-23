@@ -3,7 +3,6 @@ import { AnimatePresence } from 'framer-motion';
 import { find, isFunction, toLower } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
-import { useClickAway, useKeyPressEvent } from 'react-use';
 import DeleteButton from '../../shared/DeleteButton';
 import Tag from '../../shared/Tag';
 import InputTag from '../../shared/Tag/InputTag';
@@ -25,10 +24,7 @@ const CategoryItem = ({
   const [newTagIsInvalid, setNewTagIsInvalid] = useState(false);
   const [hover, setHover] = useState(false);
   const [localCategoryName, setLocalCategoryName] = useState(categoryName);
-  const completeEditing = () => isFunction(onComplete) && onComplete(localCategoryName);
-  useClickAway(containerRef, completeEditing);
-  useKeyPressEvent('Enter', completeEditing);
-  useKeyPressEvent('Tab', completeEditing);
+  const newCategoryFinishEditing = () => isFunction(onComplete) && onComplete(localCategoryName);
 
   const generateNewTag = e => {
     if (e.target === containerRef.current && !newTag && newTagText !== '') {
@@ -79,7 +75,7 @@ const CategoryItem = ({
         value={localCategoryName}
         onChange={setLocalCategoryName}
         className='bg-smetrics mr-2 mb-1'
-        onFinishEditing={handleNewTagComplete}
+        onFinishEditing={newCategoryFinishEditing}
       />
       {keywords?.length > 0 &&
         keywords.map((tag, i) => (
