@@ -26,7 +26,7 @@ const KeywordManager = () => {
 
   if (!data) return null;
 
-  const addNewCategory = async name => {
+  const addNewCategory = name => {
     if (!!name) {
       addCategory({ variables: { name } });
     }

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
-import { useClickAway, useKey } from 'react-use';
+import { useClickAway, useKeyPressEvent } from 'react-use';
 
 const InputTag = ({
   type = 'text',
@@ -21,8 +21,8 @@ const InputTag = ({
 
   const handleFinish = type => isFunction(onFinishEditing) && onFinishEditing(type);
 
-  useKey('Enter', () => handleFinish('Enter'));
-  useKey('Tab', () => handleFinish('Tab'));
+  useKeyPressEvent('Enter', () => handleFinish('Enter'));
+  useKeyPressEvent('Tab', () => handleFinish('Tab'));
   useClickAway(inputRef, handleFinish);
 
   useEffect(() => {
