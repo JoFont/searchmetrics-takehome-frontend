@@ -8,7 +8,11 @@ const Header = () => {
       <div>
         <p>
           Frontend Challenge by
-          <a className='border-b-2 border-smetrics' href='https://github.com/JoFont' rel='noopener noreferrer' target='_blank'>
+          <a
+            className='border-b-2 border-smetrics ml-1'
+            href='https://github.com/JoFont'
+            rel='noopener noreferrer'
+            target='_blank'>
             Diogo Marques
           </a>
         </p>
